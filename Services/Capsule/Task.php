@@ -81,16 +81,16 @@ class Services_Capsule_Task extends Services_Capsule_Common
      *
      * Retrieve a list of Tasks. Optionally the results can be 
      * limited or paged using the parameters $start and $limit
-	 * {user} - filter the tasks by assigned user name
-	 * {category} - filter tasks by assigned category
+     * {user} - filter the tasks by assigned user name
+     * {category} - filter tasks by assigned category
      *
      * @link  /api/tasks[?start={start}][&limit={limit}][&category={category}][&user={user}]
      * @throws Services_Capsule_RuntimeException
      *
-     * @param  int $start  		The start page (Optional).
-     * @param  int $limit  		The limit per page (Optional).
-	 * @param  int $category 	The category to filter tasks by (Optional).
-	 * @param  int $user		The user to filter tasks by (Optional).
+     * @param  int $start       The start page (Optional).
+     * @param  int $limit       The limit per page (Optional).
+     * @param  int $category    The category to filter tasks by (Optional).
+     * @param  int $user        The user to filter tasks by (Optional).
      *
      * @return stdClass     A stdClass object containing the information from
      *                      the json-decoded response from the server.
@@ -106,14 +106,14 @@ class Services_Capsule_Task extends Services_Capsule_Common
         if (!is_null($limit)) {
             $request['limit'] = $limit;
         }
-		
-		if (!is_null($category)) {
-			$request['category'] = $category;
-		}
-		
-		if (!is_null($user)) {
-			$request['user'] = $user;
-		}
+        
+        if (!is_null($category)) {
+            $request['category'] = $category;
+        }
+        
+        if (!is_null($user)) {
+            $request['user'] = $user;
+        }
         
         $request = http_build_query($request);
         $response = $this->sendRequest('s?' . $request);
@@ -169,7 +169,7 @@ class Services_Capsule_Task extends Services_Capsule_Common
         
         return $this->parseResponse($response);
     }
-	
+    
     /**
      * Add a task (unnattached)
      *
@@ -219,7 +219,7 @@ class Services_Capsule_Task extends Services_Capsule_Common
      * @link /api/task/{task-id}
      * @throws Services_Capsule_RuntimeException
      *
-     * @param  double       $taskId			 The id of the task to update.
+     * @param  double       $taskId          The id of the task to update.
      * @param  array        $fields         An assoc array of fields to add in the task
      *
      * @return mixed bool|stdClass          A stdClass object containing the information from

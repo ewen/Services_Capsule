@@ -96,10 +96,10 @@ class Services_Capsule_Opportunity_Task extends Services_Capsule_Common
      * @throws Services_Capsule_RuntimeException
      *
      * @param  double       $opportunityId       The oppID to add the task to.
-     * @param  array        $fields        		 An array of fields to create the task with.
+     * @param  array        $fields              An array of fields to create the task with.
      *
-     * @return mixed bool|stdClass         		 A stdClass object containing the information from
-     *                                     		 the json-decoded response from the server.
+     * @return mixed bool|stdClass               A stdClass object containing the information from
+     *                                           the json-decoded response from the server.
      */
     public function add($opportunityId, $fields)
     {
