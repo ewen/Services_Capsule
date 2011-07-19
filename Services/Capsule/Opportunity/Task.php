@@ -97,11 +97,13 @@ class Services_Capsule_Opportunity_Task extends Services_Capsule_Common
      *
      * @param  double       $opportunityId       The oppID to add the task to.
      * @param  array        $fields              An array of fields to create the task with.
+     * @param  bool         $returnId            If true the newly created Id will be returned
+     *                                           on a successful add. Default is False.
      *
-     * @return mixed bool|stdClass               A stdClass object containing the information from
+     * @return mixed bool|stdClass|int           A stdClass object containing the information from
      *                                           the json-decoded response from the server.
      */
-    public function add($opportunityId, $fields)
+    public function add($opportunityId, $fields, $returnId = false)
     {
         $url         = '/' . (double)$opportunityId . '/task';
         $task = array('task' => $fields);
@@ -110,6 +112,6 @@ class Services_Capsule_Opportunity_Task extends Services_Capsule_Common
             $url, HTTP_Request2::METHOD_POST, json_encode($task)
         );
         
-        return $this->parseResponse($response);
+        return $this->parseResponse($response, $returnId);
     }
 }

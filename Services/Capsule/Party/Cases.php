@@ -89,11 +89,13 @@ class Services_Capsule_Party_Cases extends Services_Capsule_Common
      * @param  double       $partyId       The party id to create the new case in.
      * @param  array        $fields        An assoc array of fields to add in the new
      *                                     case
+     * @param  bool         $returnId      If true the newly created Id will be returned
+     *                                     on a successful add. Default is False.
      *
-     * @return mixed bool|stdClass         A stdClass object containing the information from
+     * @return mixed bool|stdClass|int     A stdClass object containing the information from
      *                                     the json-decoded response from the server.
      */
-    public function add($partyId, array $fields)
+    public function add($partyId, array $fields, $returnId = false)
     {
         
         $url  = '/' . (double)$partyId . '/kase';
@@ -103,7 +105,7 @@ class Services_Capsule_Party_Cases extends Services_Capsule_Common
             $url, HTTP_Request2::METHOD_POST, json_encode($case)
         );
         
-        return $this->parseResponse($response);
+        return $this->parseResponse($response, $returnId);
     }
     
     /**

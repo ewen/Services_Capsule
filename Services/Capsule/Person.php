@@ -78,11 +78,13 @@ class Services_Capsule_Person extends Services_Capsule_Common
      *
      * @param  array        $fields        An assoc array of fields to add in the new
      *                                     person
+     * @param  bool         $returnId      If true the newly created Id will be returned
+     *                                     on a successful add. Default is False.
      *
-     * @return mixed bool|stdClass         A stdClass object containing the information from
+     * @return mixed bool|stdClass|int     A stdClass object containing the information from
      *                                     the json-decoded response from the server.
      */
-    public function add(array $fields)
+    public function add(array $fields, $returnId = false)
     {        
         $url         = '';
         $person = array('person' => $fields);
@@ -91,7 +93,7 @@ class Services_Capsule_Person extends Services_Capsule_Common
             $url, HTTP_Request2::METHOD_POST, json_encode($person)
         );
         
-        return $this->parseResponse($response);
+        return $this->parseResponse($response, $returnId);
     }
     
     /**

@@ -271,18 +271,28 @@ abstract class Services_Capsule_Common
      * @throws Services_Capsule_RuntimeException
      *
      * @param  HTTP_Request2_Response $response  The response from the webservice.
-     * @return mixed               stdClass|bool A stdClass object of the 
-     *                                           json-decode'ed body or true if
-     *                                           the code is 201 (created)
+     * @param  bool                   $returnId  If true the method will return the
+     *                                           newly created ID for 201 (created)
+     *                                           responses. False by default.
+     * @return mixed stdClass|bool|int           A stdClass object of the
+     *                                           json-decode'ed body or true for a
+     *                                           successful response. If $returnId
+     *                                           is True and the response is 201
+     *                                           (created) the newly created Id is
+     *                                           returned.
      */
-    protected function parseResponse(HTTP_Request2_Response $response)
+    protected function parseResponse(HTTP_Request2_Response $response, $returnId = false)
     {
         $body = $response->getBody();
         $return = json_decode($body);
         
         if (!($return instanceof stdClass)) {
-            if ($response->getStatus() == 201 || $response->getStatus() == 200) {
+            $status = $response->getStatus();
+            if ($status == 200 || ($status == 201 && !$returnId)) {
                 return true;
+            }
+            if ($status == 201 && $returnId) {
+                return $this->parseLocationHeader($response->getHeader('Location'));
             }
             
             throw new Services_Capsule_RuntimeException(
@@ -291,5 +301,28 @@ abstract class Services_Capsule_Common
         }
         
         return $return;
+    }
+    
+    /**
+     * Parse a location header to get the ID
+     *
+     * This method is used to find the newly created ID from an add
+     * request. The URL is a Location HTTP Header returned by Capsule
+     * upon a success 201 response.
+     *
+     * @throws Services_Capsule_RuntimeException
+     *
+     * @param  string   $url  The Location header URL.
+     * @return int            The created objects ID.
+     */
+    protected function parseLocationHeader($url)
+    {
+        if (preg_match('/^.*\/(\d+)$/', $url, $matches)) {
+            return (int)$matches[1];
+        }
+        
+        throw new Services_Capsule_RuntimeException(
+            'Unable to parse Location header URL'
+        );
     }
 }
